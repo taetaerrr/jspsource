@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
-<% List<BookDTO> list = (List<BookDTO>)request.getAttribute("list"); %>
+<%  List<BookDTO> list  = (List<BookDTO>)request.getAttribute("list"); %>
 <h3>Book List</h3>
 <table class="table">
   <thead>
@@ -15,14 +15,22 @@
     </tr>
   </thead>
   <tbody>
-  <% for(BookDTO dto : list){ %>
+  	<% for(BookDTO dto : list){ %>
     <tr>
-      <td><%=dto.getCode() %></td>
-      <td><a href="read_pro.jsp?code=<%=dto.getCode() %>" class="text-decoration-none text-reset"><%=dto.getTiitle() %></a></td>
-      <td><%=dto.getWriter() %></td>
-      <td><%=dto.getPrice() %></td>
-    </tr>   
+      <td><%=dto.getCode()%></td>
+      <td><a href="read_pro.jsp?code=<%=dto.getCode()%>" class="text-decoration-none text-reset"><%=dto.getTitle()%></a></td>
+      <td><%=dto.getWriter()%></td>
+      <td><%=dto.getPrice()%></td>
+    </tr>    
     <% } %>
   </tbody>
 </table>
+
 <%@ include file="../include/footer.jsp"%>
+
+
+
+
+
+
+

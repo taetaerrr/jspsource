@@ -14,7 +14,7 @@
 	BookDTO updateDto = new BookDTO();
 	updateDto.setCode(Integer.parseInt(request.getParameter("code")));
 	updateDto.setPrice(Integer.parseInt(request.getParameter("price")));	
-	updateDto.setDesciption(request.getParameter("description"));
+	updateDto.setDescription(request.getParameter("description"));
 	
 	// 2. DB 작업
 	BookDAO dao = new BookDAO();

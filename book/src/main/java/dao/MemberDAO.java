@@ -1,3 +1,4 @@
+
 package dao;
 
 import java.sql.Connection;
@@ -9,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.BookDTO;
+import dto.MemberDTO;
 
-public class BookDAO {
+public class MemberDAO {
 
 	private Connection con;
 	private PreparedStatement pstmt;
@@ -67,27 +69,24 @@ public class BookDAO {
 
 	// 전달인자 : () 에 어떻게 작성할 것인가?
 	// sql 구문의 ? 보고 결정
-	public BookDTO getRow(int code) {
+	public MemberDTO isLogin(MemberDTO loginDto) {
 
-		BookDTO dto = null;
+		MemberDTO dto = null;
 
 		try {
-
 			con = getConnection();
-			String sql = "SELECT * FROM booktbl WHERE code = ?";
+			String sql = "SELECT *FROM MEMBERTBL WHERE USERID = ? and PASSWORD = ?";
 			pstmt = con.prepareStatement(sql);
-			// sql 구문 ? 해결
-			pstmt.setInt(1, code);
+			pstmt.setString(1, loginDto.getUserid());
+			pstmt.setString(2, loginDto.getPassword());
 			rs = pstmt.executeQuery();
-			// where pk 사용된 경우 하나만 추출됨
 			if (rs.next()) {
-				dto = new BookDTO();
-				dto.setCode(rs.getInt("code"));
-				dto.setTitle(rs.getString("title"));
-				dto.setWriter(rs.getString("writer"));
-				dto.setPrice(rs.getInt("price"));
-				dto.setDescription(rs.getString("description"));
+				dto = new MemberDTO();
+				dto.setUserid(rs.getString("userid"));
+				dto.setPassword(rs.getString("password"));
+				dto.setName(rs.getString("name"));
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -96,127 +95,54 @@ public class BookDAO {
 		return dto;
 	}
 
-	public List<BookDTO> getList() {
-		// 전체조회
-		List<BookDTO> list = new ArrayList<BookDTO>();
+	public boolean dupId(String userid) {
 
 		try {
-
 			con = getConnection();
-			String sql = "SELECT * FROM booktbl";
+			String sql = "SELECT *FROM MEMBERTBL WHERE USERID = ?";
 			pstmt = con.prepareStatement(sql);
-			// sql 구문 ? 해결
+			pstmt.setString(1, userid);
 			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				// dto 에 컬럼 별로 담고 list 에 추가
-				BookDTO dto = new BookDTO();
-				dto.setCode(rs.getInt("code"));
-				dto.setTitle(rs.getString("title"));
-				dto.setWriter(rs.getString("writer"));
-				dto.setPrice(rs.getInt("price"));
-
-				list.add(dto);
+			if (rs.next()) { // 아이디 있음
+				return false;				
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			close(con, pstmt, rs);
 		}
-		return list;
+		return true; // 중복 아이디 없음
 	}
 
+	
 	// U(Update) - 수정
 	// 수정 메소드 작성하기
 	// 리턴타입 : int
-	public int update(BookDTO updateDto) {
-
-		int updateRow = 0;
-
-		try {
-
-			con = getConnection();
-			String sql = "UPDATE booktbl SET price = ?, DESCRIPTION=? WHERE code = ?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, updateDto.getPrice());
-			pstmt.setString(2, updateDto.getDescription());
-			pstmt.setInt(3, updateDto.getCode());
-
-			updateRow = pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close(con, pstmt);
-		}
-		return updateRow;
-	}
 
 	// D(Delete) - 삭제
 	// 삭제 메소드 작성하기
 	// 리턴타입 : int
-	public int delete(int code) {
 
-		int deleteRow = 0;
-
+	// C(Create) - 삽입
+	// 삽입 메소드 작성하기
+	// 리턴타입 : int
+	public int insert(MemberDTO insertDto) {
+		int insertRow = 0;
 		try {
-
 			con = getConnection();
-			String sql = "DELETE FROM booktbl WHERE code = ?";
+			String sql = "INSERT INTO MEMBERTBL(USERID,NAME,PASSWORD) VALUES(?,'?,'?)";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, code);
-			deleteRow = pstmt.executeUpdate();
+			pstmt.setString(1, insertDto.getUserid());
+			pstmt.setString(2, insertDto.getName());
+			pstmt.setString(3, insertDto.getPassword());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			close(con, pstmt);
 		}
-		return deleteRow;
-	}
-
-	// C(Create) - 삽입
-	// 삽입 메소드 작성하기
-	// 리턴타입 : int
-	public int insert(BookDTO insertDto) {
-		int insertRow = 0;
-		try {
-			
-			con = getConnection();
-			String sql="INSERT INTO booktbl(code, title, writer, price, description) values(?,?,?,?,?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, insertDto.getCode());
-			pstmt.setString(2, insertDto.getTitle());
-			pstmt.setString(3, insertDto.getWriter());
-			pstmt.setInt(4, insertDto.getPrice());
-			pstmt.setString(5, insertDto.getDescription());
-			
-			insertRow = pstmt.executeUpdate();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			close(con, pstmt);
-		}
 		return insertRow;
 	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
