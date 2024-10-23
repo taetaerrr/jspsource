@@ -1,21 +1,22 @@
-<%@page import="dao.MemberDAO"%>
 <%@page import="dto.ChangeDTO"%>
+<%@page import="dao.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%
-// 1. 	
-ChangeDTO changeDto = new ChangeDTO();
-changeDto.setUserid(request.getParameter("current_password"));
-changeDto.setCurrentPassword(request.getParameter("userid"));
-changeDto.setChangePassword(request.getParameter("change_password"));
+	ChangeDTO changeDto = new ChangeDTO();
+	changeDto.setUserid(request.getParameter("userid"));
+	changeDto.setCurrentPassword(request.getParameter("current_password"));
+	changeDto.setChangePassword(request.getParameter("change_password"));
 
-// 2. 
-MemberDAO dao = new MemberDAO();
-int updateRow = dao.update(changeDto);
-
-	if(updateRow == 0){
-	response.sendRedirect("info.jsp");
-	} else{
+	MemberDAO dao = new MemberDAO();
+	int updateRow = dao.update(changeDto);
+	
+	if(updateRow == 1){
+		session.invalidate();  //or session.removeAttribute("loginDto")
 		response.sendRedirect("login.jsp");
+	}else{
+		response.sendRedirect("info.jsp");
 	}
+	
+
 %>

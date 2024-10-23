@@ -1,5 +1,6 @@
 package dto;
 
+
 public class MemberDTO {
 	private String userid;
 	private String name;
@@ -30,10 +31,10 @@ public class MemberDTO {
 	}
 	public MemberDTO() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public String toString() {
 		return "MemberDTO [userid=" + userid + ", name=" + name + ", password=" + password + "]";
-	}
-	
+	}	
 }

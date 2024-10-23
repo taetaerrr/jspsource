@@ -4,16 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class RegisterAction implements Action {
-
+	
 	private String path;
 	
-	
-	
+
 	public RegisterAction(String path) {
 		super();
 		this.path = path;
 	}
-
 
 
 	@Override

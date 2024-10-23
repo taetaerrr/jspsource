@@ -31,20 +31,18 @@ public class MemberDAO {
 //		}
 //	}
 
-
-		public Connection getConnection() {
-			Context initContext;
-			try {
-				initContext = new InitialContext();
-				Context envContext  = (Context)initContext.lookup("java:/comp/env");
-				DataSource ds = (DataSource)envContext.lookup("jdbc/oracle");
-				con = ds.getConnection();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return con;
+	public Connection getConnection(){
+		Context initContext;
+		try {
+			initContext = new InitialContext();
+			Context envContext  = (Context)initContext.lookup("java:/comp/env");
+			DataSource ds = (DataSource)envContext.lookup("jdbc/oracle");
+			con = ds.getConnection();
+		} catch (Exception e) {			
+			e.printStackTrace();
 		}
-	
+		return con;
+	}
 
 	public void close(Connection con, PreparedStatement pstmt, ResultSet rs) {
 		try {
@@ -135,14 +133,15 @@ public class MemberDAO {
 	public int update(ChangeDTO changeDto) {
 		int updateRow = 0;
 		try {
+			
 			con = getConnection();
-			String sql ="UPDATE MEMBERTBL SET PASSWORD = ? WHERE USERID = ? AND PASSWORD = ?";
+			String sql="UPDATE MEMBERTBL SET PASSWORD = ? WHERE USERID = ? AND PASSWORD = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, changeDto.getChangePassword());
-			pstmt.setString(2, changeDto.getCurrentPassword());
-			pstmt.setString(3, changeDto.getUserid());
+			pstmt.setString(2, changeDto.getUserid());
+			pstmt.setString(3, changeDto.getCurrentPassword());
 			
-			updateRow = pstmt.executeUpdate();
+			updateRow = pstmt.executeUpdate();		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -183,3 +182,15 @@ public class MemberDAO {
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+

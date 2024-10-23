@@ -21,62 +21,63 @@ import action.RegisterAction;
 @WebServlet("*.do")
 public class BasicServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// 한글처리
 		request.setCharacterEncoding("utf-8");
-		
-		// 톰캣서버의 path 수정하지 않았다면 
-		// RquestUri => /프로젝트명/경로명		=>	/model2/login.do
-		// ContextPath => /프로젝트명/			=>  /model2
-		// "/model2/login.do"	.substring(7) 경로명만 추출 => /login.do
-		
+
+		// 톰캣서버의 path 수정하지 않았다면
+		// RequestURI => /프로젝트명/경로명 => /model2/login.do
+		// ContextPath => /프로젝트명 => /model2
+		// "/model2/login.do".substring(7) 경로명만 추출 => /login.do
+
 		String requestUri = request.getRequestURI(); // /login.do
-		String conextPath = request.getContextPath();
-		String cmd = requestUri.substring(conextPath.length()); // /login.do
-		
-		//syso
-//		System.out.println("requestUri"+requestUri);
-//		System.out.println("conextPath"+conextPath);
-		System.out.println("cmd"+cmd);
+		String contextPath = request.getContextPath();
+		String cmd = requestUri.substring(contextPath.length()); // /login.do
+
+		// syso
+//		System.out.println("requestUri "+requestUri);
+//		System.out.println("contextPath "+contextPath);	
+		System.out.println("cmd " + cmd);
 
 		Action action = null;
-		
-		if(cmd.equals("/login.do")) {
+
+		if (cmd.equals("/login.do")) {			
 			action = new LoginAction("index.jsp");
-		} else if(cmd.equals("//register.do")){
+		} else if (cmd.equals("/register.do")) {			
 			action = new RegisterAction("/member/login.jsp");
-		} else if(cmd.equals("//create.do")){
+		} else if (cmd.equals("/create.do")) {			
 			action = new CreateAction("index.jsp");
 		}
-		
-		
+
 		ActionForward af = null;
 
 		try {
-			action.execute(request, response);
+			af = action.execute(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		if(af.isRedirect()) {
-			
-		}else {
+
+		if (af.isRedirect()) {
+			response.sendRedirect(af.getPath());
+		} else {
 			RequestDispatcher rd = request.getRequestDispatcher(af.getPath());
-			rd.forward(request, response); 
+			rd.forward(request, response);
 		}
-		
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		doGet(request, response);
 	}
 

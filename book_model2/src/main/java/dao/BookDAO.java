@@ -30,14 +30,14 @@ public class BookDAO {
 //		}
 //	}
 
-	public Connection getConnection() {
+	public Connection getConnection(){
 		Context initContext;
 		try {
 			initContext = new InitialContext();
 			Context envContext  = (Context)initContext.lookup("java:/comp/env");
 			DataSource ds = (DataSource)envContext.lookup("jdbc/oracle");
 			con = ds.getConnection();
-		} catch (Exception e) {
+		} catch (Exception e) {			
 			e.printStackTrace();
 		}
 		return con;
@@ -106,16 +106,17 @@ public class BookDAO {
 		return dto;
 	}
 
-	public List<BookDTO> getList() {
+	public List<BookDTO> getList(String keyword) {
 		// 전체조회
 		List<BookDTO> list = new ArrayList<BookDTO>();
 
 		try {
 
 			con = getConnection();
-			String sql = "SELECT * FROM booktbl";
+			String sql = "SELECT * FROM booktbl WHERE title LIKE ? ORDER BY CODE DESC";
 			pstmt = con.prepareStatement(sql);
 			// sql 구문 ? 해결
+			pstmt.setString(1, "%"+keyword+"%");
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -210,14 +211,6 @@ public class BookDAO {
 		return insertRow;
 	}
 }
-
-
-
-
-
-
-
-
 
 
 

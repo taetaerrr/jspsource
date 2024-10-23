@@ -10,12 +10,12 @@
 <h1>도서등록</h1>
 <form action="/create.do" method="post">
 	<div>
-		<label for="userid">code</label>
+		<label for="code">code</label>
 		<input type="text" name="code" id="code" />
 	</div>
 	<div>
 		<button>도서등록</button>
 	</div>
-	</form>
+</form>
 </body>
 </html>
