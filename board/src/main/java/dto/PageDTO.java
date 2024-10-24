@@ -15,7 +15,7 @@ public class PageDTO {
 	private int total; // 전체 게시물 수
 	
 	public PageDTO(SearchDTO searchDTO, int total) {
-		this.searchDTO=searchDTO;
+		this.searchDTO = searchDTO;
 		this.total = total;
 		
 		endPage=(int)(Math.ceil(searchDTO.getPage() / 10.0)) * 10;

@@ -65,7 +65,7 @@ public class BasicServlet extends HttpServlet {
 		}else if(cmd.equals("/replyView.do")) { // 답변 폼보여주기
 			action = new BoardReadAction("/board/reply.jsp");
 		}else if(cmd.equals("/reply.do")) { // 답변 등록
-			action = new BoardReplyAction("");
+			action = new BoardReplyAction("/list.do");
 		}
 		
 		

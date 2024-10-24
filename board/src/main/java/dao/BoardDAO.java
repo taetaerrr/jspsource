@@ -72,7 +72,7 @@ public class BoardDAO {
 			sql += "FROM (SELECT bno,name,title,readcnt,REGDATE,RE_LEV from BOARD ";
 
 			if (!searchDTO.getCriteria().isBlank()) {
-				sql += "where" + searchDTO.getCriteria() + " like ? ";
+				sql += "where " + searchDTO.getCriteria() + " like ? ";
 				sql += "order by re_ref desc, re_seq asc) ";
 				sql += "where rownum <= ?) ";
 				sql += "where rnum > ? ";
@@ -294,13 +294,21 @@ public class BoardDAO {
 	}
 
 	// 전체 게시물 개수 리턴 메소드
-	public int getTotalRows() {
+	public int getTotalRows(SearchDTO searchDTO) {
 		int total = 0;
 		try {
 			con = getConnection();
-			String sql = "SELECT count(*) FROM BOARD";
-			pstmt = con.prepareStatement(sql);
+			
+			if(!searchDTO.getCriteria().isBlank()) {
+				String sql = "SELECT COUNT(*) FROM board WHERE "+searchDTO.getCriteria()+ " like ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+searchDTO.getKeyword()+"%");
+			} else {
+				String sql = "SELECT COUNT(*) FROM board";
+				pstmt = con.prepareStatement(sql);
+			}			
 			rs = pstmt.executeQuery();
+			
 			if (rs.next()) {
 				total = rs.getInt(1);
 			}
@@ -314,3 +322,19 @@ public class BoardDAO {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

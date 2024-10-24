@@ -29,6 +29,17 @@ public class BoardCreateAction implements Action {
 		insertDto.setPassword(request.getParameter("password"));
 		insertDto.setName(request.getParameter("name"));
 		
+		// 페이지 나누기
+		int page = Integer.parseInt(request.getParameter("page"));
+		int amount = Integer.parseInt(request.getParameter("amount"));				
+				
+		// 검색 추가
+		String criteria = request.getParameter("criteria");
+		String keyword = request.getParameter("keyword");
+		
+		
+		
+		
 		// 첨부파일 가져오기(서블릿 기능 이용)
 		Part part = request.getPart("attach");
 		String fileName = getFileName(part);
@@ -52,7 +63,7 @@ public class BoardCreateAction implements Action {
 		boolean insertFlag = service.create(insertDto);
 		
 		if(insertFlag) {			
-			
+			path += "?page="+page+"&amount="+amount+"&criteria="+criteria+"&keyword="+keyword;
 		}else {
 			path = "/board/create.jsp";
 		}	

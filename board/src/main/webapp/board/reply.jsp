@@ -3,7 +3,7 @@
 <%@ include file="../include/header.jsp"%>
 <div class="container-fluid">
 	<h1 class="h3 mb-4 text-gray-800">Reply</h1>
-	<form action="/replyView.do" method="post" id="reply">		
+	<form action="/reply.do" method="post" id="reply">		
 		<div class="form-group">
 			<label for="title">제목</label> 
 			<input type="text" class="form-control" id="title" name="title" required="required" value = "Re : ${dto.title}">			
@@ -24,6 +24,11 @@
 			<label for="password">비밀번호</label> 
 			<input type="password" class="form-control" id="password" name="password" required="required">			
 		</div>
+		<!-- 페이지 나누기 정보 -->
+		<input type="hidden" name="page" value="${searchDTO.page}"/>
+		<input type="hidden" name="amount" value="${searchDTO.amount}"/>
+		<input type="hidden" name="criteria" value="${searchDTO.criteria}"/>
+		<input type="hidden" name="keyword" value="${searchDTO.keyword}"/>
 		<!-- 부모글 정보 -->
 		<input type="hidden" name="re_ref" value="${dto.reRef}"/>
 		<input type="hidden" name="re_lev" value="${dto.reLev}"/>
@@ -35,7 +40,10 @@
 </div>
 <%-- 페이지 나누기 --%>
 <form action="/list.do" method="get" id="actionForm">
-
+		<input type="hidden" name="page" value="${searchDTO.page}"/>
+		<input type="hidden" name="amount" value="${searchDTO.amount}"/>
+		<input type="hidden" name="criteria" value="${searchDTO.criteria}"/>
+		<input type="hidden" name="keyword" value="${searchDTO.keyword}"/>
 </form>
 <script src="/js/custom/reply.js"></script>
 <%@ include file="../include/footer.jsp"%>
